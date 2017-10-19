@@ -14,8 +14,8 @@ class toDo {
 		boolean keepRemoving = true;
 		String tempfile, filename, aOrR, needToAdd, needToRemove, task;
 		int numTask = 0;
-		filename = "C:\\Users\\Thomas\\Dev\\toDoList\\To-Do-List\\toDo\\tasks.txt";
-		tempfile = "C:\\Users\\Thomas\\Dev\\toDoList\\To-Do-List\\toDo\\temp.txt";
+		String filename1 = "C:\\Users\\Thomas\\Dev\\toDoList\\To-Do-List\\toDo\\tasks.txt";
+		filename = "\\..\\..\\tasks.txt";
 
 		printCurrentTasks(filename);
 
@@ -38,7 +38,7 @@ class toDo {
 					System.out.println("ERROR: Invalid number, ry again");
 					System.exit(0);
 				}
-					removeTask(filename, tempfile, numTask);
+					removeTask(filename, numTask);
 					printCurrentTasks(filename);
 				}
 			else if (aOrR.equalsIgnoreCase("exit"))
@@ -103,7 +103,7 @@ class toDo {
 	 * @param filename - the path to the file to be read from
 	 * @param taskNumber - the number that is printed along with the task
 	 */
-	public static void removeTask(String filename, String tempfile, int taskNumber)
+	public static void removeTask(String filename, int taskNumber)
 		throws IOException {
 		ArrayList<String> list = new ArrayList<String>();	
 		File inputFile = new File(filename);
