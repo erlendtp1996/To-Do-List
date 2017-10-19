@@ -12,54 +12,43 @@ class toDo {
 		Scanner scanner = new Scanner(System.in);	
 		boolean keepAdding = true;
 		boolean keepRemoving = true;
-		String filename, needToAdd, needToRemove, task;
-		int numTask;
+		String tempfile, filename, aOrR, needToAdd, needToRemove, task;
+		int numTask = 0;
 		filename = "C:\\Users\\Thomas\\Dev\\toDoList\\To-Do-List\\toDo\\tasks.txt";
+		tempfile = "C:\\Users\\Thomas\\Dev\\toDoList\\To-Do-List\\toDo\\temp.txt";
 
 		printCurrentTasks(filename);
 
 		//ask if user if they need to add or remove task
 		while (true) {
-			while (keepAdding) {
-				System.out.println("Do you need to add a task (y/n) ?");
-				needToAdd = scanner.next();
-				if (needToAdd.equalsIgnoreCase("y")) {
-					System.out.println("Please enter your task: ");
-					task = scanner.nextLine();
-					write(filename, task);
+			System.out.println("Do you need to add or remove a task (a/r) ? Type 'exit' to quit.");
+			aOrR = scanner.nextLine();
+			if (aOrR.equalsIgnoreCase("a")) {
+				System.out.println("Please enter your task: ");
+				task = scanner.nextLine();
+				write(filename, task);
+				printCurrentTasks(filename);
+			}
+			else if (aOrR.equalsIgnoreCase("r")) {
+				System.out.println("Enter the task number to be removed: ");
+				try {
+					numTask = Integer.parseInt(scanner.nextLine());
+				}	
+				catch (Exception e) {
+					System.out.println("ERROR: Invalid number, ry again");
+					System.exit(0);
+				}
+					removeTask(filename, tempfile, numTask);
 					printCurrentTasks(filename);
 				}
-				else if (needToAdd.equalsIgnoreCase("n")) {
-					keepAdding = false;
-				}
-				else {
-					System.out.println("ERROR: Invalid input, try again");
-					System.exit(0);
-				}
+			else if (aOrR.equalsIgnoreCase("exit"))
+			{
+				System.out.println("Goodbye");
+				System.exit(0);
 			}
-
-			while (keepRemoving) {
-				System.out.println("Do you need to remove a task (y/n) ?");
-				needToRemove = scanner.next();
-				if (needToRemove.equalsIgnoreCase("y")) {
-					System.out.println("Enter the task number to be removed: ");
-					try {
-						numTask = scanner.nextInt();
-						removeTask(filename, numTask);
-						printCurrentTasks(filename);
-					}
-					catch (Exception e) {
-						System.out.println("ERROR: Invalid number, ry again");
-						System.exit(0);
-					}
-				}
-				else if (needToRemove.equalsIgnoreCase("n")) {
-					keepRemoving = false;
-				}
-				else {
-					System.out.println("ERROR: Invalid input, try again");
-					System.exit(0);
-				}
+			else {
+				System.out.println("ERROR: Invalid input, try again");
+				System.exit(0);
 			}
 		}
 	}
@@ -72,8 +61,9 @@ class toDo {
 	 */
 	public static void write(String filename, String task) 
 		throws IOException {
-		BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+		BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true));
 		writer.write(task);
+		writer.newLine();
 		writer.close();
 	}
 	
@@ -100,7 +90,7 @@ class toDo {
 			System.out.println("\tCURRENT TASKS:\n");
 			while ((task = input.readLine()) != null)
 			{
-				System.out.println("\t" + counter + ".) " + task);
+				System.out.println("\t" + counter++ + ".) " + task);
 			}
 			System.out.println("\n");
 		}
@@ -113,7 +103,31 @@ class toDo {
 	 * @param filename - the path to the file to be read from
 	 * @param taskNumber - the number that is printed along with the task
 	 */
-	public static void removeTask(String filename, int taskNumber)
-	{
+	public static void removeTask(String filename, String tempfile, int taskNumber)
+		throws IOException {
+		ArrayList<String> list = new ArrayList<String>();	
+		File inputFile = new File(filename);
+		BufferedReader read = new BufferedReader(new FileReader(inputFile));
+		
+		String currLine;
+		int counter = 1;
+		
+		while ((currLine = read.readLine()) != null) {
+			if (counter == taskNumber) {
+				counter++;
+				continue;
+			}
+			list.add(currLine);
+			counter++;
+		}	
+		read.close();		
+
+		PrintWriter clear = new PrintWriter(filename);
+		clear.print("");
+		clear.close();
+		
+		for (int i = 0; i < list.size(); i++) {
+			write(filename, list.get(i));
+		}
 	}
 }
