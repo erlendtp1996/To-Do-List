@@ -17,7 +17,7 @@ class toDo {
 		String filename1 = "C:\\Users\\Thomas\\Dev\\toDoList\\To-Do-List\\toDo\\tasks.txt";
 		filename = "\\..\\..\\tasks.txt";
 
-		printCurrentTasks(filename);
+		printCurrentTasks(filename1);
 
 		//ask if user if they need to add or remove task
 		while (true) {
@@ -26,8 +26,8 @@ class toDo {
 			if (aOrR.equalsIgnoreCase("a")) {
 				System.out.println("Please enter your task: ");
 				task = scanner.nextLine();
-				write(filename, task);
-				printCurrentTasks(filename);
+				write(filename1, task);
+				printCurrentTasks(filename1);
 			}
 			else if (aOrR.equalsIgnoreCase("r")) {
 				System.out.println("Enter the task number to be removed: ");
@@ -38,8 +38,8 @@ class toDo {
 					System.out.println("ERROR: Invalid number, ry again");
 					System.exit(0);
 				}
-					removeTask(filename, numTask);
-					printCurrentTasks(filename);
+					removeTask(filename1, numTask);
+					printCurrentTasks(filename1);
 				}
 			else if (aOrR.equalsIgnoreCase("exit"))
 			{
